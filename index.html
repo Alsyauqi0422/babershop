@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mannuruki Barbershop — Reservasi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1713;
+    --paper:#f1e6cf;
+    --paper-2:#e7d8b7;
+    --leather:#43291b;
+    --leather-dark:#2a1a10;
+    --brass:#b98a46;
+    --brass-light:#d9b876;
+    --rust:#8c3b2e;
+    --line: rgba(28,23,19,0.16);
+    --line-light: rgba(241,230,207,0.22);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    line-height:1.5;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;}
+  button{font-family:inherit;}
+  img,svg{display:block;max-width:100%;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px;}
+  :focus-visible{outline:2px solid var(--rust);outline-offset:3px;}
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:var(--paper);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 28px;max-width:1120px;margin:0 auto;
+  }
+  .wordmark{
+    font-family:'Fraunces', serif;
+    font-size:22px;
+    font-weight:600;
+    letter-spacing:0.02em;
+  }
+  .wordmark span{color:var(--rust);}
+  .navlinks{display:flex;gap:30px;list-style:none;margin:0;padding:0;}
+  .navlinks a{
+    text-decoration:none;font-size:15px;font-weight:500;
+    border-bottom:1px solid transparent;padding-bottom:2px;
+  }
+  .navlinks a:hover{border-bottom-color:var(--rust);}
+  .nav-cta{
+    background:var(--leather);color:var(--paper);
+    border:none;padding:10px 20px;font-size:14px;font-weight:600;
+    cursor:pointer;border-radius:2px;
+  }
+  .nav-cta:hover{background:var(--leather-dark);}
+  .navtoggle{display:none;background:none;border:none;font-size:26px;cursor:pointer;color:var(--ink);}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    display:grid;grid-template-columns:1.1fr 0.9fr;gap:60px;
+    padding:76px 0 64px;align-items:center;
+  }
+  .hero h1{font-size:52px;line-height:1.05;max-width:11ch;}
+  .hero p.lead{font-size:18px;max-width:46ch;margin:22px 0 30px;color:#3a322a;}
+  .hero-actions{display:flex;gap:16px;flex-wrap:wrap;align-items:center;}
+  .btn-primary{
+    background:var(--rust);color:var(--paper);border:none;
+    padding:15px 28px;font-size:15px;font-weight:600;cursor:pointer;border-radius:2px;
+  }
+  .btn-primary:hover{background:#732f24;} .btn-primary:disabled{opacity:.6;cursor:not-allowed;}
+  .btn-ghost{
+    background:none;border:1px solid var(--ink);color:var(--ink);
+    padding:14px 26px;font-size:15px;font-weight:600;cursor:pointer;border-radius:2px;
+  }
+  .btn-ghost:hover{background:var(--ink);color:var(--paper);}
+  .hero-meta{
+    margin-top:34px;padding-top:22px;border-top:1px solid var(--line);
+    display:flex;gap:34px;font-size:14px;color:#4a4139;
+  }
+  .hero-meta strong{display:block;font-family:'Fraunces',serif;font-size:16px;color:var(--ink);}
+  .hero-art{display:flex;justify-content:center;}
+  .hero-art img{width:280px;height:280px;object-fit:contain;border-radius:50%;}
+  .logo-img{width:80px;height:80px;object-fit:contain;display:block;}
+
+  /* ---------- Section shell ---------- */
+  section{padding:74px 0;}
+  .section-head{max-width:950px;
+  margin:0 auto 40px;
+  text-align:center;}
+  .section-head h2{font-size:40px;}
+  .section-head p{font-size:16px;color:#4a4139;margin-top:12px;}
+  .alt{background:var(--leather);color:var(--paper);}
+  .alt .section-head p{color:var(--paper-2);}
+
+  /* ---------- Layanan (price-board list) ---------- */
+  .service-list{border-top:1px solid var(--line);
+  max-width:950px;
+  margin:0 auto;
+  
+  }
+  .service-row{
+    display:grid;grid-template-columns:1fr auto auto;gap:24px;
+    align-items:baseline;padding:22px 0;border-bottom:1px solid var(--line);
+  }
+  .service-row h3{font-size:19px;font-weight:600;}
+  .service-row .desc{font-size:14px;color:#5a5045;margin-top:5px;font-family:'Work Sans',sans-serif;}
+  .service-row .duration{font-size:14px;color:#6b6055;white-space:nowrap;}
+  .service-row .price{font-family:'Fraunces',serif;font-size:19px;font-weight:600;white-space:nowrap;}
+
+  /* ---------- Barbers ---------- */
+ .barber-grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:20px;
+  max-width:900px;
+  margin:40px auto 0;
+}
+
+.barber-card{
+  position:relative;
+  background:#3b2418;
+  border:1px solid rgba(198,164,112,.35);
+  padding:0;
+  overflow:hidden;
+  transition:
+    transform .3s ease,
+    border-color .3s ease,
+    box-shadow .3s ease;
+}
+.barber-card:hover{
+  transform:translateY(-6px);
+  border-color:var(--brass);
+  box-shadow:0 18px 40px rgba(0,0,0,.22);
+}
+
+
+/* FOTO BARBER */
+
+.barber-image-link{
+  display:block;
+  width:100%;
+  height:500px;
+  overflow:hidden;
+  text-decoration:none;
+  background:#5c4637;
+}
+
+.barber-image{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  object-position:center;
+  transition:transform .5s ease;
+}
+
+.barber-card:hover .barber-image{
+  transform:scale(1.05);
+}
+
+
+/* INFO BARBER */
+
+.barber-card h3{
+  margin:0;
+  padding:22px 24px 5px;
+  font-family:'Fraunces',serif;
+  font-size:21px;
+  color:var(--paper);
+}
+
+.barber-card .spec{
+  padding:0 24px 24px;
+  margin:0;
+  font-size:13px;
+  color:var(--paper-2);
+}
+
+
+/* RESPONSIVE */
+
+@media(max-width:700px){
+  .barber-grid{
+    grid-template-columns:1fr;
+    max-width:500px;
+  }
+
+  .barber-image-link{
+    height:280px;
+  }
+}
+
+  /* ---------- Booking wizard ---------- */
+  .booking-shell{
+    display:grid;grid-template-columns:1fr 320px;gap:48px;align-items:start;
+  }
+  .steps{display:flex;gap:0;margin-bottom:40px;border-bottom:1px solid var(--line);}
+  .step-tab{
+    flex:1;padding:0 0 16px;font-size:14px;font-weight:600;color:#8a7f71;
+    border-bottom:2px solid transparent;margin-bottom:-1px;text-align:left;
+    position:relative;
+  }
+  .step-tab .num{
+    display:inline-block;width:22px;height:22px;border-radius:50%;
+    border:1px solid #8a7f71;text-align:center;line-height:20px;font-size:12px;margin-right:8px;
+  }
+  .step-tab.active{color:var(--ink);border-color:var(--rust);}
+  .step-tab.active .num{background:var(--rust);border-color:var(--rust);color:var(--paper);}
+  .step-tab.done{color:var(--ink);}
+  .step-tab.done .num{background:var(--ink);border-color:var(--ink);color:var(--paper);}
+
+  .step-panel{min-height:340px;}
+  .field-block{margin-bottom:16px;}
+
+  .pick-row{
+    display:flex;align-items:flex-start;gap:16px;padding:16px 18px;
+    border:1px solid var(--line);margin-bottom:10px;cursor:pointer;border-radius:2px;
+    background:#E8D8BA;
+  }
+  .pick-row:hover{border-color:var(--brass);}
+  .pick-row.selected{border-color:var(--rust);background:#E8D8BA;}
+  .pick-row input{margin-top:3px;accent-color:var(--rust);width:16px;height:16px;flex-shrink:0;}
+  .pick-row .info h4{font-size:16px;margin:0;font-weight:600;}
+  .pick-row .info span{font-size:13.5px;color:#6b6055;}
+  .pick-row .amount{margin-left:auto;font-family:'Fraunces',serif;font-weight:600;white-space:nowrap;}
+
+  .barber-pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .barber-pick{
+    border:1px solid var(--line);padding:18px;cursor:pointer;border-radius:2px;background:#E8D8BA;
+  }
+  .barber-pick:hover{border-color:var(--brass);}
+  .barber-pick.selected{border-color:var(--rust);background:#E8D8BA;}
+  .barber-pick h4{font-size:16px;margin:0 0 4px;}
+  .barber-pick span{font-size:13px;color:#6b6055;}
+
+  .date-scroller{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;margin-bottom:20px;}
+  .date-chip{
+    flex:0 0 auto;border:1px solid var(--line);padding:10px 14px;text-align:center;
+    cursor:pointer;border-radius:2px;background:#E8D8BA;min-width:64px;
+  }
+  .date-chip .dow{font-size:12px;color:#6b6055;display:block;}
+  .date-chip .dnum{font-family:'Fraunces',serif;font-size:18px;font-weight:600;display:block;margin:2px 0;}
+  .date-chip .mon{font-size:11px;color:#6b6055;}
+  .date-chip.selected{border-color:var(--rust);background:#E8D8BA;}
+
+  .time-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+  .time-slot{
+    border:1px solid var(--line);padding:11px 6px;text-align:center;font-size:14px;
+    cursor:pointer;border-radius:2px;background:#E8D8BA;
+  }
+  .time-slot.selected{border-color:var(--rust);background:#E8D8BA;font-weight:600;}
+  .time-slot.taken{opacity:0.35;text-decoration:line-through;cursor:not-allowed;background:#e9e2d2;}
+  .hint{font-size:13px;color:#6b6055;margin-top:4px;}
+
+  label.form-label{display:block;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  input[type=text],input[type=tel],textarea{
+    width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:2px;
+    font-family:'Work Sans',sans-serif;font-size:15px;background:#E8D8BA;color:var(--ink);
+  }
+  input:focus,textarea:focus{border-color:var(--rust);}
+  textarea{resize:vertical;min-height:80px;}
+  .error-text{color:var(--rust);font-size:13px;margin-top:10px;}
+
+  .wizard-actions{display:flex;justify-content:space-between;margin-top:30px;}
+
+  .summary-box{
+    border:1px solid var(--line);background:#E8D8BA;padding:24px;position:sticky;top:96px;
+  }
+  .summary-box h3{font-size:16px;margin-bottom:16px;}
+  .summary-line{display:flex;justify-content:space-between;font-size:14px;padding:8px 0;border-bottom:1px solid var(--line);}
+  .summary-total{display:flex;justify-content:space-between;font-family:'Fraunces',serif;font-size:19px;font-weight:600;padding-top:14px;}
+  .summary-empty{font-size:14px;color:#8a7f71;}
+
+  /* confirmation / recap */
+  .recap-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;}
+  .recap-block{border:1px solid var(--line);padding:18px;background:#E8D8BA;}
+  .recap-block h4{font-size:12.5px;text-transform:none;color:#6b6055;margin:0 0 8px;font-weight:600;}
+  .recap-block p{margin:0;font-size:15px;}
+
+  .success-screen{text-align:center;padding:30px 0;}
+  .success-code{
+    font-family:'Fraunces',serif;font-size:38px;font-weight:600;color:var(--rust);
+    border:1.5px dashed var(--rust);display:inline-block;padding:14px 30px;margin:20px 0;letter-spacing:0.03em;
+  }
+
+  /* ---------- Cek reservasi modal ---------- */
+  .modal-backdrop{
+    position:fixed;inset:0;background:rgba(28,23,19,0.55);z-index:100;
+    display:none;align-items:center;justify-content:center;padding:20px;
+  }
+  .modal-backdrop.open{display:flex;}
+  .modal-box{background:var(--paper);max-width:480px;width:100%;padding:32px;position:relative;max-height:85vh;overflow-y:auto;}
+  .modal-close{position:absolute;top:18px;right:18px;background:none;border:none;font-size:22px;cursor:pointer;}
+  .lookup-result{border:1px solid var(--line);padding:16px;margin-top:14px;background:#E8D8BA;}
+  .lookup-result .code{font-family:'Fraunces',serif;font-weight:600;color:var(--rust);}
+  .status-tag{
+    display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:2px;
+    background:var(--ink);color:var(--paper);margin-left:8px;
+  }
+
+  /* ---------- Footer ---------- */
+  footer{background:var(--leather-dark);color:var(--paper-2);padding:56px 0 30px;}
+  .foot-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:40px;}
+  footer h3{color:var(--paper);font-size:20px;margin-bottom:14px;}
+  footer p{font-size:14px;line-height:1.7;margin:0 0 6px;}
+  .foot-links{list-style:none;padding:0;margin:0;}
+  .foot-links li{margin-bottom:9px;font-size:14px;}
+  .foot-bottom{border-top:1px solid rgba(241,230,207,0.15);margin-top:40px;padding-top:20px;font-size:13px;color:#a8998a;}
+
+  @media(max-width:880px){
+    .navlinks{position:fixed;top:66px;left:0;right:0;background:var(--paper);flex-direction:column;
+      gap:0;padding:10px 28px 20px;border-bottom:1px solid var(--line);display:none;}
+    .navlinks.open{display:flex;}
+    .navlinks a{padding:12px 0;display:block;border-bottom:1px solid var(--line);}
+    .navtoggle{display:block;}
+    .nav-cta{display:none;}
+    .hero{grid-template-columns:1fr;padding:44px 0;}
+    .hero h1{font-size:38px;max-width:none;}
+    .hero-art{order:-1;margin-bottom:10px;}
+    .hero-art img{width:220px;height:220px;}
+    .hero-meta{flex-wrap:wrap;gap:20px;}
+    .barber-grid{grid-template-columns:1fr 1fr;}
+    .booking-shell{grid-template-columns:1fr;}
+    .summary-box{position:static;}
+    .steps{overflow-x:auto;}
+    .step-tab{font-size:12.5px;white-space:nowrap;flex:none;padding-right:18px;}
+    .time-grid{grid-template-columns:repeat(3,1fr);}
+    .barber-pick-grid{grid-template-columns:1fr;}
+    .recap-grid{grid-template-columns:1fr;}
+    .foot-grid{grid-template-columns:1fr;gap:30px;}
+    .service-row{grid-template-columns:1fr;gap:6px;}
+    .service-row .price{order:3;}
+  }
+.logo-img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+/* =========================
+   FOOTER MANNURUKI
+========================= */
+
+footer {
+  background: #5f2806;
+  color: var(--paper-2);
+  padding: 56px 0 30px;
+}
+
+.foot-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1.3fr 1fr;
+  gap: 70px;
+  align-items: start;
+}
+
+
+/* BRAND */
+
+.footer-brand h1 {
+  color: var(--paper);
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+  margin: 5;
+}
+
+
+/* JUDUL */
+
+footer h3 {
+  color: var(--paper);
+  font-family: 'Fraunces', serif;
+  font-size: 14px;
+  margin: 0 0 18px;
+}
+
+
+/* NAVIGASI */
+
+.foot-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.foot-links li {
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.foot-links a {
+  color: rgba(241,230,207,0.72);
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.foot-links a:hover {
+  color: var(--brass-light);
+}
+
+
+/* JAM OPERASIONAL */
+
+footer p {
+  font-size: 13px;
+  line-height: 1.7;
+  margin: 0 0 6px;
+}
+
+
+/* =========================
+   SOSIAL MEDIA
+========================= */
+
+.footer-social {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.social-icons {
+  display: flex;
+  gap: 12px;
+  margin: 0 0 18px;
+}
+
+
+/* LINGKARAN IKON */
+
+.social-icons a {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(241,230,207,0.5);
+  border-radius: 50%;
+
+  color: var(--paper);
+
+  text-decoration: none;
+
+  padding: 0;
+  margin: 0;
+
+  transition: all 0.25s ease;
+}
+
+
+/* SVG */
+
+.social-icons a svg {
+  width: 15px !important;
+  height: 15px !important;
+
+  display: block !important;
+
+  max-width: none !important;
+
+  color: var(--paper);
+
+  overflow: visible;
+}
+
+
+/* HOVER */
+
+.social-icons a:hover {
+  background: var(--brass);
+  border-color: var(--brass);
+
+  color: var(--leather-dark);
+
+  transform: translateY(-2px);
+}
+
+.social-icons a:hover svg {
+  color: var(--leather-dark);
+}
+
+
+/* ALAMAT */
+
+.footer-address {
+  color: rgba(241,230,207,0.82);
+
+  font-family: 'Work Sans', sans-serif;
+
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+
+/* =========================
+   COPYRIGHT
+========================= */
+
+.foot-bottom {
+  border-top: 1px solid rgba(241,230,207,0.15);
+
+  margin-top: 40px;
+  padding-top: 20px;
+
+  font-family: 'Work Sans', sans-serif;
+
+  font-size: 11px;
+
+  color: rgba(241,230,207,0.45);
+
+  text-align: center;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:880px) {
+
+  .foot-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 35px;
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+
+}
+
+@media(max-width:600px) {
+
+  footer {
+    padding: 45px 0 25px;
+  }
+
+  .foot-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .footer-brand {
+    grid-column: auto;
+  }
+
+}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+
+    <!-- LOGO -->
+    <a href="#home" class="logo">
+      <img
+        src="image/Logo Brand.png"
+        alt="Mannuruki Barbershop"
+        class="logo-img"
+      >
+    </a>
+
+    <!-- MENU -->
+    <ul class="navlinks" id="navlinks">
+      <li><a href="#layanan">Layanan</a></li>
+      <li><a href="#barber">Capster</a></li>
+      <li><a href="#reservasi">Reservasi</a></li>
+      <li><a href="#" class="open-lookup">Cek Reservasi</a></li>
+    </ul>
+
+    <!-- BUTTON -->
+    <button
+      class="nav-cta"
+      onclick="document.getElementById('reservasi').scrollIntoView()">
+      Reservasi Sekarang
+    </button>
+
+    <!-- MOBILE -->
+    <button
+      class="navtoggle"
+      id="navToggle"
+      aria-label="Buka menu">
+      ☰
+    </button>
+
+  </nav>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <div>
+      <h1>Your best style.</h1>
+      <p class="lead">Mannuruki Barbershop adalah tempat di mana ketelitian, pengalaman, dan gaya berpadu dalam setiap potongan. Kami menghadirkan layanan grooming dengan barber terampil yang memahami bahwa setiap orang memiliki karakter dan gaya yang berbeda.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="document.getElementById('reservasi').scrollIntoView()">Mulai Reservasi</button>
+        <button class="btn-ghost" onclick="document.getElementById('layanan').scrollIntoView()">Lihat Layanan</button>
+      </div>
+      <div class="hero-meta">
+        <div><strong>09.00 – 21.00</strong>Setiap hari</div>
+        <div><strong>Jl. Mannuruki Raya No.53</strong>Makassar, Sulawesi Selatan</div>
+        <div><strong>+6281243551313</strong>WhatsApp / Telepon</div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <img src="image/Logo.png" alt="Mannuruki Barbershop">
+    </div>
+  </section>
+</div>
+
+<section id="layanan">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Daftar Layanan</h2>
+    </div>
+    <div class="service-list" id="serviceListDisplay"></div>
+  </div>
+</section>
+
+<section id="barber" class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Kenali Capster Kami</h2>
+      <p>Setiap capster punya gaya dan keahlian yang berbeda. <br> Pilih capster favoritmu dan dapatkan potongan yang sesuai dengan gaya kamu.</p>
+    </div>
+    <div class="barber-grid" id="barberGridDisplay">
+<div class="barber-card">
+
+        <div class="barber-image-link">
+          <img
+            src="image/Logo Brand.png"
+            alt="Bang Jaka"
+            class="barber-image"
+          >
+        </div>
+
+        <h3>Bang Jaka</h3>
+        <div class="spec">Fade & pompadour</div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<section id="reservasi">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Reservasi</h2>
+      <p>Empat langkah singkat: layanan, barber, jadwal, lalu data diri.</p>
+    </div>
+
+    <div class="steps" id="stepTracker"></div>
+
+    <div class="booking-shell">
+      <div class="step-panel" id="stepPanel"></div>
+
+      <div class="summary-box" id="summaryBox"></div>
+    </div>
+  </div>
+</section>
+
+<div class="modal-backdrop" id="lookupModal">
+  <div class="modal-box">
+    <button class="modal-close" id="closeLookup" aria-label="Tutup">×</button>
+    <h3 style="margin-bottom:6px;">Cek Reservasi</h3>
+    <p style="font-size:14px;color:#5a5045;margin-top:0;">Masukkan kode reservasi yang muncul setelah reservasi berhasil dibuat.</p>
+    <label class="form-label" for="lookupCode">Kode reservasi</label>
+    <input type="text" id="lookupCode" placeholder="KNR-A7X2B" autocomplete="off" inputmode="text" maxlength="16">
+    <button class="btn-primary" style="margin-top:14px;width:100%;" id="doLookup">Cari Reservasi</button>
+    <div id="lookupResults"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap foot-grid">
+      <!-- LOGO -->
+    <div class="footer-brand">
+      <h1>Mannuruki Barbershop</h1>
+      <img src="image/Logo Brand.png" 
+           alt="Mannuruki Barbershop" 
+           class="footer-logo">
+    </div>
+
+    <!-- NAVIGASI -->
+    <div>
+      <h3>Navigasi</h3>
+
+      <ul class="foot-links">
+        <li><a href="#layanan">Layanan</a></li>
+        <li><a href="#barber">Barber</a></li>
+        <li><a href="#reservasi">Reservasi</a></li>
+        <li><a href="#" id="openLookup">Cek Reservasi</a></li>
+      </ul>
+    </div>
+
+    <!-- JAM OPERASIONAL -->
+    <div>
+      <h3>Jam Operasional</h3>
+
+      <ul class="foot-links">
+        <li>Senin – Jumat: 09.00 – 21.00</li>
+        <li>Sabtu – Minggu: 09.00 – 21.00</li>
+      </ul>
+    </div>
+
+    <!-- IKUTI KAMI -->
+    <div class="footer-social">
+      <h3>Ikuti Kami</h3>
+
+      <div class="social-icons">
+
+        <!-- Instagram -->
+        <a href="https://www.instagram.com/mannurukibarber?igsh=b2NweWQyaDE2NGoy" aria-label="Instagram">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"/>
+
+            <circle cx="12" cy="12" r="4"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"/>
+
+            <circle cx="17.5" cy="6.5" r="1"
+              fill="currentColor"
+              stroke="none"/>
+          </svg>
+        </a>
+
+        <!-- TikTok -->
+        <a href="https://www.tiktok.com/@mannurukibarber?_r=1&_t=ZS-96xUW4eR1C1" aria-label="TikTok">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M15 3v10.2c0 2.1-1.1 3.5-3 3.5
+              -1.4 0-2.4-.9-2.4-2.1
+              0-1.3 1-2.2 2.4-2.2
+              .4 0 .8.1 1.1.2V9.5
+              c-.4-.1-.8-.1-1.2-.1
+              -3.1 0-5.4 2.2-5.4 5.2
+              0 3 2.3 5.2 5.4 5.2
+              3.3 0 5.7-2.1 5.7-5.8V9.5
+              c1 .6 2.1 1 3.4 1.1V7.5
+              C18.5 7.1 17 5.6 16.7 3H15Z"
+              fill="currentColor"/>
+          </svg>
+        </a>
+
+        <!-- WhatsApp -->
+        <a href="https://api.whatsapp.com/send/?phone=6281243551313&text&type=phone_number&app_absent=0" aria-label="WhatsApp">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12 3a9 9 0 0 0-7.7 13.7L3 21l4.5-1.3
+              A9 9 0 1 0 12 3Z"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"/>
+
+            <path
+              d="M8.5 8c.2-.4.5-.5.8-.5h.5
+              c.2 0 .4.1.5.4l.8 1.8
+              c.1.3.1.5-.1.7l-.6.6
+              c.5 1 1.3 1.8 2.4 2.3l.6-.6
+              c.2-.2.4-.2.7-.1l1.8.8
+              c.3.1.4.3.3.5
+              -.1.7-.3 1.1-1 1.1-1.7
+              0-.3-.1-.6-.2-.8
+              -.9-.2.4-2.5-1.5-4.4
+              -1.9-1.9-3.8-2.1-4.5-2.1
+              -.6 0-1.2.4-1.5.8Z"
+              fill="currentColor"/>
+          </svg>
+        </a>
+
+      </div>
+
+      <div class="footer-address">
+        Jl. Mannuruki Raya No.53<br>
+        Makassar, Sulawesi Selatan
+      </div>
+    </div>
+
+  </div>
+
+  <div class="wrap foot-bottom">
+    © 2026 Mannuruki Barbershop. All rights reserved.
+  </div>
+</footer>
+
+<script>
+/* ================= DATA ================= */
+const SERVICES = [
+  {id:'s1', name:'Potong Klasik', desc:'Gunting rapi, garis natural, styling akhir dengan pomade.', price:45000, duration:30},
+  {id:'s2', name:'Potong + Cukur Jenggot', desc:'Potong rambut lengkap ditambah rapikan jenggot pakai pisau cukur.', price:65000, duration:45},
+  {id:'s3', name:'Creambath & Pijat Kepala', desc:'Perawatan rambut dengan pijat relaksasi kepala dan bahu.', price:55000, duration:40},
+  {id:'s4', name:'Pewarnaan Rambut', desc:'Coloring penuh atau highlight, konsultasi warna sebelum mulai.', price:120000, duration:90},
+  {id:'s5', name:'Potong Anak (di bawah 12 tahun)', desc:'Potongan ramah anak, suasana santai, tanpa rewel.', price:35000, duration:25},
+  {id:'s6', name:'Paket Groom Lengkap', desc:'Potong, cukur jenggot, dan creambath jadi satu paket hemat.', price:140000, duration:90},
+];
+
+const BARBERS = [
+  {
+    id: 'bj',
+    name: 'Bang Jaka',
+    initial: 'BJ',
+    specialty: 'Fade & pompadour'
+  },
+  {
+    id: 'kr',
+    name: 'Kang Rudi',
+    initial: 'KR',
+    specialty: 'Gaya klasik & cukur jenggot'
+  }
+];
+
+const TIME_SLOTS = ['09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00'];
+const DOW = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+const MONTHS = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+
+function rupiah(n){ return 'Rp' + n.toLocaleString('id-ID'); }
+function pad(n){ return n<10 ? '0'+n : ''+n; }
+function dateKey(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+
+function generateDates(){
+  const out = [];
+  const today = new Date();
+  for(let i=0;i<14;i++){
+    const d = new Date(today);
+    d.setDate(today.getDate()+i);
+    out.push(d);
+  }
+  return out;
+}
+const DATES = generateDates();
+
+/* ================= STATE ================= */
+const state = {
+  step: 1,
+  services: [],
+  barber: null,
+  date: null,
+  time: null,
+  name: '',
+  phone: '',
+  notes: '',
+  bookingResult: null,
+  errorMsg: ''
+};
+
+/* ================= VERCEL API / GOOGLE SHEETS ================= */
+const API_BASE = '/api/booking';
+
+async function apiRequest(url, options = {}) {
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      'Accept': 'application/json',
+      ...(options.headers || {})
+    }
+  });
+
+  const text = await response.text();
+  let data;
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch {
+    throw new Error(`Respons server tidak valid (${response.status}).`);
+  }
+
+  if (!response.ok || data.success === false) {
+    throw new Error(data.message || `Server error (${response.status}).`);
+  }
+
+  return data;
+}
+
+async function getBookedSlots(barberId, dKey){
+  if(!barberId || barberId === 'any') return [];
+  try{
+    const data = await apiRequest(
+      `${API_BASE}?action=slots&barberId=${encodeURIComponent(barberId)}&date=${encodeURIComponent(dKey)}`
+    );
+    return Array.isArray(data.slots) ? data.slots : [];
+  }catch(e){
+    console.error('Gagal mengambil slot:', e);
+    return [];
+  }
+}
+
+async function saveBookingRecord(record){
+  const data = await apiRequest(API_BASE, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(record)
+  });
+  return data;
+}
+
+async function findBookingByCode(code){
+  const cleanCode = String(code || '').trim().toUpperCase();
+  if(!cleanCode) return [];
+  const data = await apiRequest(
+    `${API_BASE}?action=lookup&code=${encodeURIComponent(cleanCode)}`
+  );
+  return Array.isArray(data.bookings) ? data.bookings : [];
+}
+
+/* ================= STATIC DISPLAY SECTIONS ================= */
+function renderServiceListDisplay(){
+  const el = document.getElementById('serviceListDisplay');
+  el.innerHTML = SERVICES.map(s => `
+    <div class="service-row">
+      <div>
+        <h3>${escapeHtml(s.name)}</h3>
+        <div class="desc">${escapeHtml(s.desc)}</div>
+      </div>
+      <div class="duration">${s.duration} menit</div>
+      <div class="price">${rupiah(s.price)}</div>
+    </div>
+  `).join('');
+}
+
+function renderBarberGridDisplay(){
+  const el = document.getElementById('barberGridDisplay');
+
+  el.innerHTML = `
+    <div class="barber-card">
+
+      <a href="#barber" class="barber-image-link">
+        <img
+          src="image/Capster.png"
+          alt="Bang Jaka"
+          class="barber-image"
+        >
+      </a>
+
+      <h3>Bang Jaka</h3>
+      <div class="spec">Fade & pompadour</div>
+
+    </div>
+
+    <div class="barber-card">
+
+      <a href="#barber" class="barber-image-link">
+        <img
+          src="image/Capster1.png"
+          alt="Kang Rudi"
+          class="barber-image"
+        >
+      </a>
+
+      <h3>Kang Rudi</h3>
+      <div class="spec">Gaya klasik & cukur jenggot</div>
+
+    </div>
+  `;
+}
+
+/* ================= WIZARD ================= */
+const STEP_LABELS = ['Layanan','Barber','Jadwal','Data Diri','Konfirmasi'];
+
+function renderStepTracker(){
+  const el = document.getElementById('stepTracker');
+  el.innerHTML = STEP_LABELS.map((label,i)=>{
+    const n = i+1;
+    let cls = 'step-tab';
+    if(n === state.step) cls += ' active';
+    else if(n < state.step) cls += ' done';
+    return `<div class="${cls}"><span class="num">${n}</span>${label}</div>`;
+  }).join('');
+}
+
+function totalPrice(){ return state.services.reduce((sum,id)=>{
+  const s = SERVICES.find(x=>x.id===id); return sum + (s?s.price:0);
+},0); }
+function totalDuration(){ return state.services.reduce((sum,id)=>{
+  const s = SERVICES.find(x=>x.id===id); return sum + (s?s.duration:0);
+},0); }
+
+function renderSummaryBox(){
+  const el = document.getElementById('summaryBox');
+  if(state.services.length === 0 && !state.barber && !state.date){
+    el.innerHTML = `<h3>Ringkasan Reservasi</h3><p class="summary-empty">Belum ada layanan dipilih.</p>`;
+    return;
+  }
+  const chosen = state.services.map(id => SERVICES.find(s=>s.id===id)).filter(Boolean);
+  const barberObj = BARBERS.find(b=>b.id===state.barber);
+  let html = `<h3>Ringkasan Reservasi</h3>`;
+  chosen.forEach(s=>{
+    html += `<div class="summary-line"><span>${s.name}</span><span>${rupiah(s.price)}</span></div>`;
+  });
+  if(barberObj){
+    html += `<div class="summary-line"><span>Barber</span><span>${barberObj.name}</span></div>`;
+  }
+  if(state.date){
+    const d = new Date(state.date);
+    html += `<div class="summary-line"><span>Tanggal</span><span>${d.getDate()} ${MONTHS[d.getMonth()]}</span></div>`;
+  }
+  if(state.time){
+    html += `<div class="summary-line"><span>Jam</span><span>${state.time}</span></div>`;
+  }
+  if(chosen.length){
+    html += `<div class="summary-total"><span>Total</span><span>${rupiah(totalPrice())}</span></div>
+      <div class="hint">Estimasi durasi ${totalDuration()} menit</div>`;
+  }
+  el.innerHTML = html;
+}
+
+function toggleService(id){
+  const idx = state.services.indexOf(id);
+  if(idx === -1) state.services.push(id); else state.services.splice(idx,1);
+  renderStepPanel();
+  renderSummaryBox();
+}
+
+function renderStep1(){
+  return `
+    <div>
+      ${SERVICES.map(s => `
+        <div class="pick-row ${state.services.includes(s.id)?'selected':''}" data-svc="${s.id}">
+          <div class="info">
+            <h4>${s.name}</h4>
+            <span>${s.duration} menit — ${s.desc}</span>
+          </div>
+          <div class="amount">${rupiah(s.price)}</div>
+        </div>
+      `).join('')}
+
+      ${state.errorMsg ? `<div class="error-text">${state.errorMsg}</div>` : ''}
+    </div>
+  `;
+}
+
+function renderStep2(){
+  return `
+    <div class="barber-pick-grid">
+      ${BARBERS.map(b => `
+        <div class="barber-pick ${state.barber===b.id?'selected':''}" data-barber="${b.id}">
+          <h4>${b.name}</h4>
+          <span>${b.specialty}</span>
+        </div>
+      `).join('')}
+    </div>
+    ${state.errorMsg ? `<div class="error-text">${state.errorMsg}</div>` : ''}
+  `;
+}
+
+function renderStep3(){
+  const dKey = state.date;
+  return `
+    <div>
+      <label class="form-label">Pilih tanggal</label>
+      <div class="date-scroller">
+        ${DATES.map(d => {
+          const key = dateKey(d);
+          return `<div class="date-chip ${state.date===key?'selected':''}" data-date="${key}">
+            <span class="dow">${DOW[d.getDay()]}</span>
+            <span class="dnum">${d.getDate()}</span>
+            <span class="mon">${MONTHS[d.getMonth()]}</span>
+          </div>`;
+        }).join('')}
+      </div>
+      <label class="form-label">Pilih jam</label>
+      <div class="time-grid" id="timeGrid">
+        ${TIME_SLOTS.map(t => `<div class="time-slot" data-time="${t}">${t}</div>`).join('')}
+      </div>
+      <div class="hint" id="timeHint">${state.date ? '' : 'Pilih tanggal dulu untuk melihat jam yang tersedia.'}</div>
+      ${state.errorMsg ? `<div class="error-text">${state.errorMsg}</div>` : ''}
+    </div>
+  `;
+}
+
+function renderStep4(){
+  return `
+    <div class="field-block">
+      <label class="form-label" for="inputName">Nama lengkap</label>
+      <input type="text" id="inputName" value="${state.name}" placeholder="Nama kamu">
+    </div>
+    <div class="field-block">
+      <label class="form-label" for="inputPhone">Nomor WhatsApp / telepon</label>
+      <input type="tel" id="inputPhone" value="${state.phone}" placeholder="08xxxxxxxxxx">
+    </div>
+    <div class="field-block">
+      <label class="form-label" for="inputNotes">Catatan tambahan (opsional)</label>
+      <textarea id="inputNotes" placeholder="Contoh: potong pendek di samping, atas tetap panjang">${state.notes}</textarea>
+    </div>
+    ${state.errorMsg ? `<div class="error-text">${state.errorMsg}</div>` : ''}
+  `;
+}
+
+function renderStep5(){
+  const chosen = state.services.map(id => SERVICES.find(s=>s.id===id)).filter(Boolean);
+  const barberObj = BARBERS.find(b=>b.id===state.barber);
+  const d = state.date ? new Date(state.date) : null;
+  return `
+    <div class="recap-grid">
+      <div class="recap-block">
+        <h4>Layanan</h4>
+        <p>${chosen.map(s=>s.name).join(', ')}</p>
+      </div>
+      <div class="recap-block">
+        <h4>Barber</h4>
+        <p>${barberObj ? barberObj.name : '-'}</p>
+      </div>
+      <div class="recap-block">
+        <h4>Jadwal</h4>
+        <p>${d ? `${DOW[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]} — ${state.time}` : '-'}</p>
+      </div>
+      <div class="recap-block">
+        <h4>Kontak</h4>
+        <p>${state.name}<br>${state.phone}</p>
+      </div>
+    </div>
+    ${state.notes ? `<div class="recap-block" style="margin-bottom:24px;"><h4>Catatan</h4><p>${state.notes}</p></div>` : ''}
+    ${state.errorMsg ? `<div class="error-text">${state.errorMsg}</div>` : ''}
+  `;
+}
+
+function renderSuccess(){
+  const r = state.bookingResult;
+  return `
+    <div class="success-screen">
+      <h3 style="font-size:22px;">Reservasi berhasil dibuat</h3>
+      <p style="color:#5a5045;">Simpan kode ini untuk mengecek status reservasimu kapan saja.</p>
+      <div class="success-code">${r.code}</div>
+      <p style="color:#5a5045;">${r.name} — ${r.time}, ${r.dateLabel}<br>Barber: ${r.barberName}</p>
+      <div class="hero-actions" style="justify-content:center;margin-top:20px;">
+        <button class="btn-primary" id="resetWizard">Buat Reservasi Lagi</button>
+        <button class="btn-ghost" id="viewMyBookings">Cek Reservasi Saya</button>
+      </div>
+    </div>
+  `;
+}
+
+async function renderStepPanel(){
+  const panel = document.getElementById('stepPanel');
+  if(state.step === 6){
+    panel.innerHTML = renderSuccess();
+    attachSuccessEvents();
+    renderStepTracker();
+    document.getElementById('summaryBox').innerHTML = `<h3>Selesai</h3><p class="summary-empty">Reservasi sudah tersimpan.</p>`;
+    return;
+  }
+  renderStepTracker();
+  if(state.step === 1) panel.innerHTML = renderStep1();
+  else if(state.step === 2) panel.innerHTML = renderStep2();
+  else if(state.step === 3) panel.innerHTML = renderStep3();
+  else if(state.step === 4) panel.innerHTML = renderStep4();
+  else if(state.step === 5) panel.innerHTML = renderStep5();
+
+  panel.innerHTML += renderWizardActions();
+  attachStepEvents();
+
+  if(state.step === 3 && state.date){
+    await refreshTimeGrid();
+  }
+}
+
+function renderWizardActions(){
+  const isLast = state.step === 5;
+  return `
+    <div class="wizard-actions">
+      ${state.step > 1 ? `<button class="btn-ghost" id="btnBack">Kembali</button>` : `<span></span>`}
+      <button class="btn-primary" id="btnNext">${isLast ? 'Konfirmasi Reservasi' : 'Lanjut'}</button>
+    </div>
+  `;
+}
+
+async function refreshTimeGrid(){
+  const taken = await getBookedSlots(state.barber, state.date);
+  document.querySelectorAll('#timeGrid .time-slot').forEach(el=>{
+    const t = el.getAttribute('data-time');
+    el.classList.remove('taken','selected');
+    if(taken.includes(t)) el.classList.add('taken');
+    if(state.time === t) el.classList.add('selected');
+  });
+  document.getElementById('timeHint').textContent = taken.length
+    ? `${taken.length} jam sudah penuh untuk barber ini di tanggal tersebut.`
+    : 'Semua jam masih tersedia.';
+}
+
+function attachStepEvents(){
+  const panel = document.getElementById('stepPanel');
+
+  panel.querySelectorAll('[data-svc-check]').forEach(cb=>{
+    cb.addEventListener('change', ()=> toggleService(cb.getAttribute('data-svc-check')));
+  });
+  panel.querySelectorAll('.pick-row').forEach(row=>{
+    row.addEventListener('click', (e)=>{
+      if(e.target.tagName === 'INPUT') return;
+      toggleService(row.getAttribute('data-svc'));
+    });
+  });
+
+  panel.querySelectorAll('[data-barber]').forEach(card=>{
+    card.addEventListener('click', ()=>{
+      state.barber = card.getAttribute('data-barber');
+      state.errorMsg = '';
+      renderStepPanel();
+      renderSummaryBox();
+    });
+  });
+
+  panel.querySelectorAll('[data-date]').forEach(chip=>{
+    chip.addEventListener('click', async ()=>{
+      state.date = chip.getAttribute('data-date');
+      state.time = null;
+      state.errorMsg = '';
+      renderSummaryBox();
+      document.querySelectorAll('.date-chip').forEach(c=>c.classList.remove('selected'));
+      chip.classList.add('selected');
+      await refreshTimeGrid();
+    });
+  });
+
+  panel.querySelectorAll('.time-slot').forEach(slot=>{
+    slot.addEventListener('click', ()=>{
+      if(slot.classList.contains('taken')) return;
+      state.time = slot.getAttribute('data-time');
+      state.errorMsg = '';
+      document.querySelectorAll('.time-slot').forEach(s=>s.classList.remove('selected'));
+      slot.classList.add('selected');
+      renderSummaryBox();
+    });
+  });
+
+  const nameInput = document.getElementById('inputName');
+  const phoneInput = document.getElementById('inputPhone');
+  const notesInput = document.getElementById('inputNotes');
+  if(nameInput) nameInput.addEventListener('input', e=> state.name = e.target.value);
+  if(phoneInput) phoneInput.addEventListener('input', e=> state.phone = e.target.value);
+  if(notesInput) notesInput.addEventListener('input', e=> state.notes = e.target.value);
+
+  const backBtn = document.getElementById('btnBack');
+  if(backBtn) backBtn.addEventListener('click', ()=>{
+    state.errorMsg = '';
+    state.step -= 1;
+    renderStepPanel();
+  });
+
+  const nextBtn = document.getElementById('btnNext');
+  if(nextBtn) nextBtn.addEventListener('click', handleNext);
+}
+
+function attachSuccessEvents(){
+  const resetBtn = document.getElementById('resetWizard');
+  const viewBtn = document.getElementById('viewMyBookings');
+  if(resetBtn) resetBtn.addEventListener('click', ()=>{
+    Object.assign(state, {step:1, services:[], barber:null, date:null, time:null, name:'', phone:'', notes:'', bookingResult:null, errorMsg:''});
+    renderStepPanel();
+    renderSummaryBox();
+    document.getElementById('reservasi').scrollIntoView();
+  });
+  if(viewBtn) viewBtn.addEventListener('click', ()=>{
+    const code = state.bookingResult?.code || '';
+    openLookupModal(code);
+  });
+}
+
+async function handleNext(){
+  state.errorMsg = '';
+  if(state.step === 1){
+    if(state.services.length === 0){ state.errorMsg = 'Pilih minimal satu layanan dulu, ya.'; renderStepPanel(); return; }
+  }
+  if(state.step === 2){
+    if(!state.barber){ state.errorMsg = 'Pilih barber dulu, atau pilih "Tanpa Preferensi".'; renderStepPanel(); return; }
+  }
+  if(state.step === 3){
+    if(!state.date || !state.time){ state.errorMsg = 'Pilih tanggal dan jam dulu.'; renderStepPanel(); return; }
+    const taken = await getBookedSlots(state.barber, state.date);
+    if(taken.includes(state.time)){ state.errorMsg = 'Waktu ini baru saja dipesan orang lain. Pilih jam lain.'; renderStepPanel(); return; }
+  }
+  if(state.step === 4){
+    if(state.name.trim().length < 3){ state.errorMsg = 'Nama minimal 3 huruf.'; renderStepPanel(); return; }
+    const phoneDigits = state.phone.replace(/\D/g,'');
+    if(phoneDigits.length < 9){ state.errorMsg = 'Masukkan nomor telepon yang valid.'; renderStepPanel(); return; }
+    state.phone = phoneDigits;
+  }
+  if(state.step === 5){
+    await submitBooking();
+    return;
+  }
+  state.step += 1;
+  renderStepPanel();
+}
+
+async function submitBooking(){
+  const d = new Date(state.date);
+  const dateLabel = `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+  const barberObj = BARBERS.find(b=>b.id===state.barber);
+  const chosen = state.services.map(id => SERVICES.find(s=>s.id===id)).filter(Boolean);
+  const code = 'KNR-' + Math.random().toString(36).slice(2,7).toUpperCase();
+
+  const record = {
+    code,
+    name: state.name.trim(),
+    phone: state.phone.replace(/\D/g,''),
+    notes: state.notes.trim(),
+    services: chosen.map(s=>s.name),
+    total: totalPrice(),
+    barberName: barberObj ? barberObj.name : '',
+    barberId: state.barber,
+    date: state.date,
+    dateLabel,
+    time: state.time,
+    status: 'Menunggu Konfirmasi',
+    createdAt: new Date().toISOString()
+  };
+
+  const nextBtn = document.getElementById('btnNext');
+  if(nextBtn){
+    nextBtn.disabled = true;
+    nextBtn.textContent = 'Menyimpan...';
+  }
+
+  try{
+    const result = await saveBookingRecord(record);
+
+    if(result.booking){
+      state.bookingResult = result.booking;
+    }else{
+      state.bookingResult = record;
+    }
+
+    state.step = 6;
+    state.errorMsg = '';
+    await renderStepPanel();
+    renderSummaryBox();
+  }catch(e){
+    console.error('Gagal menyimpan reservasi:', e);
+    state.errorMsg = e.message || 'Reservasi gagal disimpan. Silakan coba lagi.';
+    renderStepPanel();
+  }
+}
+
+/* ================= LOOKUP MODAL ================= */
+function openLookupModal(code = ''){
+  const modal = document.getElementById('lookupModal');
+  const input = document.getElementById('lookupCode');
+  const resultsEl = document.getElementById('lookupResults');
+  if(!modal || !input || !resultsEl) return;
+  modal.classList.add('open');
+  resultsEl.innerHTML = '';
+  input.value = code ? String(code).toUpperCase().trim() : '';
+  setTimeout(()=>{
+    input.focus();
+    if(code) runLookup();
+  },100);
+}
+
+function closeLookupModal(){
+  const modal = document.getElementById('lookupModal');
+  if(modal) modal.classList.remove('open');
+}
+
+function renderLookupResults(bookings){
+  const resultsEl = document.getElementById('lookupResults');
+  if(!resultsEl) return;
+  if(!Array.isArray(bookings) || bookings.length === 0){
+    resultsEl.innerHTML = `<div class="lookup-result"><p class="hint" style="margin:0;">Reservasi dengan kode tersebut tidak ditemukan.</p></div>`;
+    return;
+  }
+  resultsEl.innerHTML = bookings.map(b=>{
+    const services = Array.isArray(b.services) ? b.services.join(', ') : String(b.services || '-');
+    const status = String(b.status || 'Menunggu Konfirmasi');
+    const barber = String(b.barberName || b.barber || '-');
+    const dateLabel = String(b.dateLabel || b.date || '-');
+    const time = String(b.time || '-');
+    const total = Number(b.total) || 0;
+    return `
+      <div class="lookup-result">
+        <div><span class="code">${escapeHtml(b.code || '-')}</span><span class="status-tag">${escapeHtml(status)}</span></div>
+        <p style="margin:10px 0 0;font-size:14px;"><strong>Layanan</strong><br>${escapeHtml(services)}</p>
+        <p style="margin:8px 0 0;font-size:14px;color:#5a5045;"><strong>Capster</strong><br>${escapeHtml(barber)}</p>
+        <p style="margin:8px 0 0;font-size:14px;color:#5a5045;"><strong>Jadwal</strong><br>${escapeHtml(dateLabel)} — ${escapeHtml(time)}</p>
+        <p style="margin:8px 0 0;font-size:15px;font-weight:600;">Total: ${rupiah(total)}</p>
+      </div>`;
+  }).join('');
+}
+
+async function runLookup(){
+  const input = document.getElementById('lookupCode');
+  const resultsEl = document.getElementById('lookupResults');
+  const button = document.getElementById('doLookup');
+  if(!input || !resultsEl) return;
+
+  const code = input.value.trim().toUpperCase();
+  input.value = code;
+  if(!code){
+    resultsEl.innerHTML = `<div class="lookup-result"><p class="error-text" style="margin:0;">Masukkan kode reservasi terlebih dahulu.</p></div>`;
+    input.focus();
+    return;
+  }
+  if(!/^KNR-[A-Z0-9]{5,10}$/.test(code)){
+    resultsEl.innerHTML = `<div class="lookup-result"><p class="error-text" style="margin:0;">Format kode tidak valid. Contoh: KNR-A7X2B</p></div>`;
+    input.focus();
+    return;
+  }
+
+  resultsEl.innerHTML = `<p class="hint">Mencari reservasi...</p>`;
+  if(button){ button.disabled = true; button.textContent = 'Mencari...'; }
+  try{
+    const bookings = await findBookingByCode(code);
+    renderLookupResults(bookings);
+  }catch(e){
+    console.error('Gagal mencari reservasi:', e);
+    resultsEl.innerHTML = `<div class="lookup-result"><p class="error-text" style="margin:0;">${escapeHtml(e.message || 'Gagal menghubungi server.')}</p></div>`;
+  }finally{
+    if(button){ button.disabled = false; button.textContent = 'Cari Reservasi'; }
+  }
+}
+
+function escapeHtml(value){
+  return String(value ?? '')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#039;');
+}
+
+/* ================= INIT / NAV ================= */
+document.getElementById('navToggle').addEventListener('click', ()=>{
+  document.getElementById('navlinks').classList.toggle('open');
+});
+document.querySelectorAll('.navlinks a').forEach(a=>{
+  a.addEventListener('click', ()=> document.getElementById('navlinks').classList.remove('open'));
+});
+document.querySelectorAll('.open-lookup').forEach(link=>{
+  link.addEventListener('click', (e)=>{ e.preventDefault(); openLookupModal(); });
+});
+document.getElementById('closeLookup').addEventListener('click', closeLookupModal);
+document.getElementById('lookupModal').addEventListener('click', (e)=>{ if(e.target.id==='lookupModal') closeLookupModal(); });
+document.getElementById('doLookup').addEventListener('click', runLookup);
+document.getElementById('lookupCode').addEventListener('keydown', e=>{
+  if(e.key==='Enter'){ e.preventDefault(); runLookup(); }
+});
+
+renderServiceListDisplay();
+renderBarberGridDisplay();
+renderStepPanel();
+renderSummaryBox();
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "kenari-barbershop",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Kenari Barbershop reservation website with Vercel API and Google Sheets",
+  "scripts": {
+    "dev": "vercel dev"
+  }
+}
